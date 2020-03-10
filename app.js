@@ -37,8 +37,8 @@ if (!isProduction) {
 if (isProduction) {
   mongoose.connect(process.env.MONGO_URI);
 } else {
-  let uri = process.env.MONGO_URI;
-  uri = uri.replace('<username>', process.env.MONGO_USR).replace('<password>', process.env.MONGO_PWD);
+  let uri = process.env.MONGO_URI || "mongodb+srv://<username>:<password>@cluster0-icrxl.mongodb.net/conduit?retryWrites=true&w=majority";
+  uri = uri.replace('<username>', process.env.mongo_usr).replace('<password>', process.env.mongo_pwd);
   let uriMongo = 'mongodb://localhost/conduit';
   mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }).then(e => {
     console.log('is connected')

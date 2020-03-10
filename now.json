@@ -9,8 +9,8 @@
   "build": {
     "env": {
       "MONGO_URI": "mongodb+srv://<username>:<password>@cluster0-icrxl.mongodb.net/conduit?retryWrites=true&w=majority",
-      "MONGO_USR": "aladdinDev",
-      "MONGO_PWD": "myBlog",
+      "mongo_usr": "@mongo_usr",
+      "mongo_pwd": "@mongo_pwd",
       "NODE_ENV": "DEV",
       "PORT": "4000"
     }
