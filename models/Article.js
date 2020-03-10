@@ -4,46 +4,52 @@ var slug = require('slug');
 var User = mongoose.model('User');
 
 var ArticleSchema = new mongoose.Schema({
-  slug: {type: String, lowercase: true, unique: true},
+  slug: { type: String, lowercase: true, unique: true },
   title: String,
   description: String,
   body: String,
-  favoritesCount: {type: Number, default: 0},
+  photo: String,
+  favoritesCount: { type: Number, default: 0 },
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
   tagList: [{ type: String }],
   author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
-}, {timestamps: true});
+}, { timestamps: true });
 
-ArticleSchema.plugin(uniqueValidator, {message: 'is already taken'});
+ArticleSchema.plugin(uniqueValidator, { message: 'is already taken' });
 
-ArticleSchema.pre('validate', function(next){
-  if(!this.slug)  {
-    this.slugify();
+ArticleSchema.pre('validate', function (next) {
+  if (!this.slug) {
+    this.slugify(this.title);
+    next();
   }
 
+  this.slugify(this.slug);
   next();
 });
 
-ArticleSchema.methods.slugify = function() {
-  this.slug = slug(this.title) + '-' + (Math.random() * Math.pow(36, 6) | 0).toString(36);
+ArticleSchema.methods.slugify = function (text = '') {
+  this.slug = slug(text || this.slug);
+  // uncomment this if you want some Random hash at the end
+  // + '-' + (Math.random() * Math.pow(36, 6) | 0).toString(36)
 };
 
-ArticleSchema.methods.updateFavoriteCount = function() {
+ArticleSchema.methods.updateFavoriteCount = function () {
   var article = this;
 
-  return User.count({favorites: {$in: [article._id]}}).then(function(count){
+  return User.count({ favorites: { $in: [article._id] } }).then(function (count) {
     article.favoritesCount = count;
 
     return article.save();
   });
 };
 
-ArticleSchema.methods.toJSONFor = function(user){
+ArticleSchema.methods.toJSONFor = function (user) {
   return {
     slug: this.slug,
     title: this.title,
     description: this.description,
     body: this.body,
+    photo: this.photo,
     createdAt: this.createdAt,
     updatedAt: this.updatedAt,
     tagList: this.tagList,
