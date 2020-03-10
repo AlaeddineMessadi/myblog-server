@@ -9,7 +9,11 @@ var http = require('http'),
   errorhandler = require('errorhandler'),
   mongoose = require('mongoose');
 
-var isProduction = process.env.NODE_ENV === 'production';
+
+if (!process.env.now) require("dotenv").config();
+
+var isProduction = process.env.NODE_ENV === 'PROD';
+var port = process.env.now ? 8080 : 4000;
 
 // Create global app object
 var app = express();

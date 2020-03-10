@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "*.js",
+      "use": "@now/node-server"
+    }
+  ],
+  "build": {
+    "env": {
+      "MONGO_URI": "mongodb+srv://<username>:<password>@cluster0-icrxl.mongodb.net/conduit?retryWrites=true&w=majority",
+      "MONGO_USR": "aladdinDev",
+      "MONGO_PWD": "myBlog",
+      "NODE_ENV": "DEV",
+      "PORT": "4000"
+    }
+  }
+}
