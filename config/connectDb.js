@@ -3,8 +3,6 @@ mongoose = require('mongoose');
 if (!process.env.now) require("dotenv").config();
 
 
-console.log('connect to the database');
-
 
 const connection = {};
 
@@ -27,11 +25,12 @@ async function connectDb() {
       useFindAndModify: false,
       useCreateIndex: true
     });
-    console.warn('DB is connected');
+
     connection.isConnected = db.connections[0].readyState;
+    console.log('Connected to Database')
   } catch (exception) {
     const error = new Error(exception);
-    console.log('cant connect to the database')
+    console.log('Error: cannot connect to the Database')
     throw error;
   }
 }

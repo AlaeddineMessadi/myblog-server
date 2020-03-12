@@ -8,6 +8,7 @@ var connectDb = require('../../config/connectDb');
 connectDb();
 
 
+
 router.get('/', auth.required, function (req, res, next) {
   User.findById(req.payload.id).then(function (user) {
     if (!user) { return res.sendStatus(401); }
@@ -47,16 +48,35 @@ router.put('/', auth.required, function (req, res, next) {
 router.post('/', function (req, res, next) {
   var user = new User();
 
+  // return res.json({ message: 'hey' });
 
   user.username = req.body.user.username;
   user.email = req.body.user.email;
   user.setPassword(req.body.user.password);
 
   user.save().then(function () {
-    // return res.json({ user: user.toAuthJSON() });
-    return res.json({ message: `User ${user.email} is registered successfully` })
+    return res.json({ user: user.toAuthJSON() });
+    // return res.json({ message: `User ${user.email} is registered successfully` })
   }).catch(next);
 });
+
+router.get('/activation', function (req, res, next) {
+
+  const { hash } = req.query;
+
+  if (!hash) {
+    return res.json({ message: 'activation Code is not provided' });
+  }
+
+  User.findOne({ activationHash: hash }).then(user => {
+    if (user.activate(hash)) {
+      return res.json({ ...user.toJSON, message: 'user is activated' });
+    }
+  }).catch(error => {
+    return res.json({ message: 'Activation code is incorrect' });
+  });
+});
+
 
 
 router.post('/login', function (req, res, next) {
