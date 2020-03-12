@@ -4,8 +4,13 @@ var Article = mongoose.model('Article');
 var Comment = mongoose.model('Comment');
 var User = mongoose.model('User');
 var auth = require('../auth');
+var connectDb = require('../../config/connectDb');
 
 var DEFAULT_PHOTO = 'https://images.unsplash.com/photo-1534972195531-d756b9bfa9f2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80';
+
+
+connectDb();
+
 
 // Preload article objects on routes with ':article'
 router.param('article', function (req, res, next, slug) {
@@ -30,7 +35,11 @@ router.param('comment', function (req, res, next, id) {
   }).catch(next);
 });
 
-router.get('/', auth.optional, function (req, res, next) {
+router.get('/', function (req, res, next) {
+  res.json({ message: 'router is working' })
+})
+
+router.get('/s', auth.optional, function (req, res, next) {
   var query = {};
   var limit = 20;
   var offset = 0;

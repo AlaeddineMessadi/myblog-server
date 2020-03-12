@@ -2,15 +2,16 @@
   "name": "conduit-node",
   "version": "1.0.0",
   "description": "conduit on node",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
     "mongo:start": "docker run --name realworld-mongo -p 27017:27017 mongo & sleep 5",
-    "start": "node ./app.js",
-    "dev": "nodemon ./app.js",
+    "start": "node ./index.js",
+    "dev": "nodemon ./index.js",
     "test": "newman run ./tests/api-tests.postman.json -e ./tests/env-api-tests.postman.json",
     "stop": "lsof -ti :3000 | xargs kill",
     "mongo:stop": "docker stop realworld-mongo && docker rm realworld-mongo",
-    "deploy": "now -e mongo_usr=@mongo_usr -e mongo_pwd=@mongo_pwd"
+    "deploy": "now -e mongo_usr=@mongo_usr -e mongo_pwd=@mongo_pwd",
+    "nowdev": "now dev -e mongo_usr=@mongo_usr -e mongo_pwd=@mongo_pwd"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,7 @@
     "jsonwebtoken": "7.1.9",
     "method-override": "2.3.5",
     "methods": "1.1.2",
+    "mongodb-client-encryption": "^1.0.1",
     "mongoose": "5.9.3",
     "mongoose-unique-validator": "2.0.3",
     "morgan": "1.7.0",

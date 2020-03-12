@@ -4,6 +4,7 @@
     "mongo_usr": "aladdinDev",
     "mongo_pwd": "myBlog",
     "NODE_ENV": "DEV",
-    "PORT": "4000"
+    "PORT": "4000",
+    "SECRET": "ifoundyou"
   }
 }

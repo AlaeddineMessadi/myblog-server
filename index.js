@@ -6,8 +6,7 @@ var http = require('http'),
   session = require('express-session'),
   cors = require('cors'),
   passport = require('passport'),
-  errorhandler = require('errorhandler'),
-  mongoose = require('mongoose');
+  errorhandler = require('errorhandler');
 
 
 if (!process.env.now) require("dotenv").config();
@@ -20,6 +19,11 @@ var app = express();
 
 app.use(cors());
 
+
+console.log('HOT RELOAD');
+
+
+
 // Normal express config defaults
 app.use(require('morgan')('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -28,30 +32,32 @@ app.use(bodyParser.json());
 app.use(require('method-override')());
 app.use(express.static(__dirname + '/public'));
 
-app.use(session({ secret: 'conduit', cookie: { maxAge: 60000 }, resave: false, saveUninitialized: false }));
+
+app.use(session({
+  secret: 'conduit',
+  cookie: { maxAge: 60000 },
+  resave: true,
+  saveUninitialized: true
+}));
 
 if (!isProduction) {
   app.use(errorhandler());
 }
 
-if (isProduction) {
-  mongoose.connect(process.env.MONGO_URI);
-} else {
-  let uri = process.env.MONGO_URI || "mongodb+srv://<username>:<password>@cluster0-icrxl.mongodb.net/conduit?retryWrites=true&w=majority";
-  uri = uri.replace('<username>', process.env.mongo_usr).replace('<password>', process.env.mongo_pwd);
-  let uriMongo = 'mongodb://localhost/conduit';
-  mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }).then(e => {
-    console.log('is connected')
-    mongoose.set('debug', true);
-  }).catch(err => console.log('mongoose is not connected'));
-}
 
 require('./models/User');
 require('./models/Article');
 require('./models/Comment');
 require('./config/passport');
 
-app.use(require('./routes'));
+var apiRoutes = require('./routes');
+
+
+app.use('/health', function (req, res, next) {
+  res.json({ message: 'here we go' })
+});
+
+app.use(apiRoutes);
 
 /// catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -95,3 +101,8 @@ app.use(function (err, req, res, next) {
 var server = app.listen(process.env.PORT || 3000, function () {
   console.log('Listening on port ' + server.address().port);
 });
+
+
+// app.set('port', process.env.PORT || 3000)
+
+// module.exports = app;
