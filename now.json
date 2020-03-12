@@ -14,12 +14,12 @@
   ],
   "build": {
     "env": {
-      "mongo_uri": "mongodb+srv://<username>:<password>@cluster0-icrxl.mongodb.net/conduit?retryWrites=true&w=majority",
-      "mongo_usr": "aladdinDev",
-      "mongo_pwd": "myBlog",
-      "node_env": "DEV",
+      "mongo_uri": "@mongo_uri",
+      "mongo_usr": "@mongo_usr",
+      "mongo_pwd": "@mongo_pwd",
+      "node_env": "PROD",
       "port": "4000",
-      "secret": "ifoundyou"
+      "secret": "@secret"
     }
   }
 }
