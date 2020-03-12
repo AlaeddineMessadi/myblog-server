@@ -11,18 +11,13 @@ var http = require('http'),
 
 if (!process.env.now) require("dotenv").config();
 
-var isProduction = process.env.NODE_ENV === 'PROD';
+var isProduction = process.env.node_env === 'PROD';
 var port = process.env.now ? 8080 : 4000;
 
 // Create global app object
 var app = express();
 
 app.use(cors());
-
-
-console.log('HOT RELOAD');
-
-
 
 // Normal express config defaults
 app.use(require('morgan')('dev'));
@@ -98,7 +93,7 @@ app.use(function (err, req, res, next) {
 });
 
 // finally, let's start our server...
-var server = app.listen(process.env.PORT || 3000, function () {
+var server = app.listen(process.env.port || 3000, function () {
   console.log('Listening on port ' + server.address().port);
 });
 

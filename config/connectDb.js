@@ -14,22 +14,26 @@ if (connection.isConnected) {
   return;
 }
 
-
-console.log(process.env)
-let uri = process.env.MONGO_URI;
+let uri = process.env.mongo_uri;
 uri = uri.replace('<username>', process.env.mongo_usr).replace('<password>', process.env.mongo_pwd);
 
 async function connectDb() {
   //  use new database connection
-  const db = await mongoose.connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-    useCreateIndex: true
-  });
-  console.warn('DB is connected');
-  connection.isConnected = db.connections[0].readyState;
+  try {
+    const db = await mongoose.connect(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
+      useFindAndModify: false,
+      useCreateIndex: true
+    });
+    console.warn('DB is connected');
+    connection.isConnected = db.connections[0].readyState;
+  } catch (exception) {
+    const error = new Error(exception);
+    console.log('cant connect to the database')
+    throw error;
+  }
 }
 
 module.exports = connectDb;

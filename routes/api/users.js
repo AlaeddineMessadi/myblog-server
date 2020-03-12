@@ -43,6 +43,22 @@ router.put('/', auth.required, function (req, res, next) {
   }).catch(next);
 });
 
+//  register a user
+router.post('/', function (req, res, next) {
+  var user = new User();
+
+
+  user.username = req.body.user.username;
+  user.email = req.body.user.email;
+  user.setPassword(req.body.user.password);
+
+  user.save().then(function () {
+    // return res.json({ user: user.toAuthJSON() });
+    return res.json({ message: `User ${user.email} is registered successfully` })
+  }).catch(next);
+});
+
+
 router.post('/login', function (req, res, next) {
   if (!req.body.user.email) {
     return res.status(422).json({ errors: { email: "can't be blank" } });
@@ -64,20 +80,5 @@ router.post('/login', function (req, res, next) {
   })(req, res, next);
 });
 
-
-//  register a user
-router.post('/', function (req, res, next) {
-  var user = new User();
-
-
-  user.username = req.body.user.username;
-  user.email = req.body.user.email;
-  user.setPassword(req.body.user.password);
-
-  user.save().then(function () {
-    // return res.json({ user: user.toAuthJSON() });
-    return res.json({ message: `User ${user.email} is registered successfully` })
-  }).catch(next);
-});
 
 module.exports = router;

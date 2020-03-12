@@ -35,11 +35,8 @@ router.param('comment', function (req, res, next, id) {
   }).catch(next);
 });
 
-router.get('/', function (req, res, next) {
-  res.json({ message: 'router is working' })
-})
-
-router.get('/s', auth.optional, function (req, res, next) {
+// get articles
+router.get('/', auth.optional, function (req, res, next) {
   var query = {};
   var limit = 20;
   var offset = 0;

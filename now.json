@@ -8,38 +8,15 @@
   ],
   "routes": [
     {
-      "src": "/health",
-      "dest": "/index.js",
-      "methods": [
-        "GET"
-      ]
-    },
-    {
-      "src": "/api/users",
-      "dest": "/index.js",
-      "methods": [
-        "GET",
-        "POST",
-        "PUT",
-        "DELETE"
-      ]
-    },
-    {
-      "src": "/api/articles",
-      "dest": "/index.js",
-      "methods": [
-        "GET",
-        "POST",
-        "PUT",
-        "DELETE"
-      ]
+      "src": "/(.*)",
+      "dest": "/index.js"
     }
   ],
   "build": {
     "env": {
       "mongo_uri": "mongodb+srv://<username>:<password>@cluster0-icrxl.mongodb.net/conduit?retryWrites=true&w=majority",
-      "mongo_usr": "@mongo_usr",
-      "mongo_pwd": "@mongo_pwd",
+      "mongo_usr": "aladdinDev",
+      "mongo_pwd": "myBlog",
       "node_env": "DEV",
       "port": "4000",
       "secret": "ifoundyou"
