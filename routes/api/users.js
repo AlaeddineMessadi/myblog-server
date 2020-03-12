@@ -4,6 +4,7 @@ var passport = require('passport');
 var User = mongoose.model('User');
 var auth = require('../auth');
 var connectDb = require('../../config/connectDb');
+var mailer = require('../../utils/mailer');
 
 connectDb();
 
@@ -48,6 +49,9 @@ router.put('/', auth.required, function (req, res, next) {
 router.post('/', function (req, res, next) {
   var user = new User();
 
+  // prepare email:
+  let htmlEmail = ``;
+
   // return res.json({ message: 'hey' });
 
   user.username = req.body.user.username;
@@ -55,6 +59,7 @@ router.post('/', function (req, res, next) {
   user.setPassword(req.body.user.password);
 
   user.save().then(function () {
+    sendEmail
     return res.json({ user: user.toAuthJSON() });
     // return res.json({ message: `User ${user.email} is registered successfully` })
   }).catch(next);

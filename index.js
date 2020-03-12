@@ -8,6 +8,7 @@ var http = require('http'),
   passport = require('passport'),
   errorhandler = require('errorhandler');
 
+var mailer = require('./utils/mailer');
 
 if (!process.env.now) require("dotenv").config();
 
@@ -48,7 +49,10 @@ require('./config/passport');
 var apiRoutes = require('./routes');
 
 
-app.use('/health', function (req, res, next) {
+app.use('/health', async function (req, res, next) {
+  console.log(' this is the mailer')
+  const result = await mailer();
+  console.log('this si result ', result)
   res.json({ message: 'here we go' })
 });
 
