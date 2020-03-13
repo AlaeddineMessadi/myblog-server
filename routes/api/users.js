@@ -8,6 +8,12 @@ var mailer = require('../../utils/mailer');
 
 connectDb();
 
+// {
+//   const { role } = req.user;
+// if (role !== 'admin') {
+//   return res.sendStatus(403);
+//   }
+// }
 
 
 router.get('/', auth.required, function (req, res, next) {
@@ -18,6 +24,7 @@ router.get('/', auth.required, function (req, res, next) {
   }).catch(next);
 });
 
+// update user
 router.put('/', auth.required, function (req, res, next) {
   User.findById(req.payload.id).then(function (user) {
     if (!user) { return res.sendStatus(401); }
@@ -46,27 +53,28 @@ router.put('/', auth.required, function (req, res, next) {
 });
 
 //  register a user
-router.post('/', function (req, res, next) {
+router.post('/', async function (req, res, next) {
   var user = new User();
-
-  // prepare email:
-  let htmlEmail = ``;
-
-  // return res.json({ message: 'hey' });
 
   user.username = req.body.user.username;
   user.email = req.body.user.email;
   user.setPassword(req.body.user.password);
 
-  user.save().then(function () {
-    sendEmail
+  user.save().then(async function () {
+    // prepare email:
+    const objectMail = { from: 'example@example.com', to: 'alaeddine.messadi@gmail.com', subject: 'Activate your account' };
+    const data = {
+      name: user.username,
+      activationLink: `http://localhost:3000/api/users/activation?hash=${user.activationHash}`,
+      text: 'Thank you for registration, please activate your account using this link',
+      button: "ACTIVATE LINK"
+    };
+    // const response = await mailer(objectMail, data);
     return res.json({ user: user.toAuthJSON() });
-    // return res.json({ message: `User ${user.email} is registered successfully` })
   }).catch(next);
 });
 
 router.get('/activation', function (req, res, next) {
-
   const { hash } = req.query;
 
   if (!hash) {
@@ -75,8 +83,11 @@ router.get('/activation', function (req, res, next) {
 
   User.findOne({ activationHash: hash }).then(user => {
     if (user.activate(hash)) {
-      return res.json({ ...user.toJSON, message: 'user is activated' });
+      return user.save().then(function () {
+        return res.json({ ...user.toJSON, message: 'User is activated' });
+      });
     }
+    return res.json({ ...user.toJSON, message: 'User cannot be activated' });
   }).catch(error => {
     return res.json({ message: 'Activation code is incorrect' });
   });
@@ -95,6 +106,8 @@ router.post('/login', function (req, res, next) {
 
   passport.authenticate('local', { session: false }, function (err, user, info) {
     if (err) { return next(err); }
+
+    if (!user.isActive) return res.status(405).json({ status: 405, message: 'User is not activated' });
 
     if (user) {
       user.token = user.generateJWT();

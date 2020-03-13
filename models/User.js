@@ -11,10 +11,11 @@ var UserSchema = new mongoose.Schema({
   image: String,
   isActive: { type: Boolean, default: false },
   activationHash: String,
+  role: { type: String, default: 'user' },
   favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Article' }],
   following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   hash: String,
-  salt: String
+  salt: String,
 }, { timestamps: true });
 
 UserSchema.plugin(uniqueValidator, { message: 'is already taken.' });
@@ -26,7 +27,8 @@ UserSchema.methods.validPassword = function (password) {
 
 UserSchema.methods.setPassword = function (password) {
   this.salt = crypto.randomBytes(16).toString('hex');
-  this.activationHash = crypto.createHash('sha1').update(this.username).digest('hex').toString('hex');
+  this.hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
+  this.activationHash = crypto.createHash('sha1').update(this.username).digest('hex');
 };
 
 UserSchema.methods.activate = function (hash) {
@@ -35,7 +37,7 @@ UserSchema.methods.activate = function (hash) {
   }
 
   this.isActive = true;
-  this.activationHash = ''
+  this.activationHash = '';
 
   return true;
 };
@@ -48,6 +50,7 @@ UserSchema.methods.generateJWT = function () {
   return jwt.sign({
     id: this._id,
     username: this.username,
+    role: this.role,
     exp: parseInt(exp.getTime() / 1000),
   }, secret);
 };
@@ -58,7 +61,8 @@ UserSchema.methods.toAuthJSON = function () {
     email: this.email,
     token: this.generateJWT(),
     bio: this.bio,
-    image: this.image
+    image: this.image,
+    role: this.role,
   };
 };
 

@@ -1,5 +1,5 @@
 const nodemailer = require("nodemailer");
-const Email = require('email-templates');
+const ejs = require("ejs");
 
 const user = {
   email: 'nodemailer.d@gmail.com',
@@ -16,58 +16,41 @@ const transporter = nodemailer.createTransport({
   }
 });
 
+//Verifying the Nodemailer Transport instance
+transporter.verify((error, success) => {
+  if (error) {
+    console.log(error);
+  } else {
+    console.log('Server Nodemailer is ready to take messages');
+  }
+});
 
-// const mailObject = {
-//   from: '"Fred Foo 👻" <foo@example.com>',
-//   to: "bar@example.com, baz@example.com",
-//   subject: "Hello ✔",
-//   text: "Hello world?",
-//   html: "<b>Hello world?</b>"
-// }
 
-const sendMail = async () => {
 
-  // { from, to = "alaeddine.messadi@gmail.com", subject, text, html }
+const sendMail = async (objecMail, data) => {
+  const { from, to, subject } = objecMail;
+  const { name, activationLink, text, button } = data;
 
-  const email = new Email({
-    message: {
-      from: 'niftylettuce@gmail.com'
-    },
-    // uncomment below to send emails in development/test env:
-    // send: true
-    transport: {
-      ...transporter,
-      jsonTransport: true
+  const responseHTML = await ejs.renderFile(__dirname + "/emails/activation.ejs", { data: { name, activationLink, text, button } });
+
+  if (!responseHTML) {
+    console.log(responseHTML['error']);
+  } else {
+    var mainOptions = {
+      from: `"MyBlog 👻"${from}`,
+      to,
+      subject,
+      html: responseHTML
+    };
+
+    const responseSendMail = await transporter.sendMail(mainOptions);
+
+    if (!responseSendMail) {
+      console.log('EMAIL NOT SENT', responseSendMail['err']);
+    } else {
+      console.log('EMAIL IS SENT');
     }
-  });
-
-
-  email
-    .send({
-      template: 'mars',
-      message: {
-        to: 'alaeddine.messadi@gamil.com'
-      },
-      locals: {
-        name: 'Elon'
-      }
-    })
-    .then(console.log)
-    .catch(console.error);
-
-
-  // send mail with defined transport object
-  //   let info = transporter.sendMail({
-  //     from: '"Fred Foo 👻" <foo@example.com>',
-  //     to,
-  //     subject,
-  //     text,
-  //     html
-  //   }).then(info => {
-  //     console.log("Message sent ", info);
-  //   }).catch(e => {
-  //     console.error('Email was not sent', e);
-  //   });
+  }
 }
 
 

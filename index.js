@@ -9,6 +9,12 @@ var http = require('http'),
   errorhandler = require('errorhandler');
 
 var mailer = require('./utils/mailer');
+var PrettyError = require('pretty-error');
+
+// instantiate PrettyError, which can then be used to render error objects
+var pe = new PrettyError();
+pe.start();
+
 
 if (!process.env.now) require("dotenv").config();
 
@@ -50,9 +56,6 @@ var apiRoutes = require('./routes');
 
 
 app.use('/health', async function (req, res, next) {
-  console.log(' this is the mailer')
-  const result = await mailer();
-  console.log('this si result ', result)
   res.json({ message: 'here we go' })
 });
 
@@ -61,6 +64,7 @@ app.use(apiRoutes);
 /// catch 404 and forward to error handler
 app.use(function (req, res, next) {
   var err = new Error('Not Found');
+
   err.status = 404;
   next(err);
 });

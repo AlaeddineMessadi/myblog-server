@@ -130,12 +130,20 @@ router.get('/feed', auth.required, function (req, res, next) {
   });
 });
 
+//  create article
 router.post('/', auth.required, function (req, res, next) {
+
+  const { role } = req.payload;
+  if (role !== 'admin') {
+    return res.sendStatus(403);
+  }
+
   // when you find User
   User.findById(req.payload.id).then(function (user) {
-    if (!user) { return res.sendStatus(401); }
+    if (!user) {
+      return res.sendStatus(401);
+    }
 
-    console.log(req.body.article)
     var article = new Article(req.body.article);
 
     article.author = user;
@@ -160,6 +168,11 @@ router.get('/:article', auth.optional, function (req, res, next) {
 
 // update article
 router.put('/:article', auth.required, function (req, res, next) {
+  const { role } = req.payload;
+  if (role !== 'admin') {
+    return res.sendStatus(403);
+  }
+
   User.findById(req.payload.id).then(function (user) {
 
     if (req.article.author._id.toString() === req.payload.id.toString()) {
@@ -196,6 +209,11 @@ router.put('/:article', auth.required, function (req, res, next) {
 
 // delete article
 router.delete('/:article', auth.required, function (req, res, next) {
+  const { role } = req.payload;
+  if (role !== 'admin') {
+    return res.sendStatus(403);
+  }
+
   User.findById(req.payload.id).then(function (user) {
     if (!user) { return res.sendStatus(401); }
 
@@ -264,6 +282,11 @@ router.get('/:article/comments', auth.optional, function (req, res, next) {
 
 // create a new comment
 router.post('/:article/comments', auth.required, function (req, res, next) {
+  const { role } = req.payload;
+  if (!['user', 'admin'].includes(role)) {
+    return res.sendStatus(403);
+  }
+
   User.findById(req.payload.id).then(function (user) {
     if (!user) { return res.sendStatus(401); }
 
@@ -282,6 +305,10 @@ router.post('/:article/comments', auth.required, function (req, res, next) {
 });
 
 router.delete('/:article/comments/:comment', auth.required, function (req, res, next) {
+  const { role } = req.payload;
+  if (!['user', 'admin'].includes(role)) {
+    return res.sendStatus(403);
+  }
   if (req.comment.author.toString() === req.payload.id.toString()) {
     req.article.comments.remove(req.comment._id);
     req.article.save()
