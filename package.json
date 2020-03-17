@@ -28,6 +28,7 @@
     "express-jwt": "3.3.0",
     "express-session": "1.13.0",
     "http-errors": "^1.7.3",
+    "http-status": "^1.4.2",
     "jsonwebtoken": "7.1.9",
     "method-override": "2.3.5",
     "methods": "1.1.2",

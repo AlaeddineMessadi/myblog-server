@@ -4,6 +4,7 @@ var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
 var secret = require('../config').secret;
 
+
 var UserSchema = new mongoose.Schema({
   username: { type: String, lowercase: true, unique: true, required: [true, "can't be blank"], match: [/^[a-zA-Z0-9]+$/, 'is invalid'], index: true },
   email: { type: String, lowercase: true, unique: true, required: [true, "can't be blank"], match: [/\S+@\S+\.\S+/, 'is invalid'], index: true },
@@ -11,7 +12,7 @@ var UserSchema = new mongoose.Schema({
   image: String,
   isActive: { type: Boolean, default: false },
   activationHash: String,
-  role: { type: String, default: 'user' },
+  role: { type: String, default: 'user', enum: ['user', 'admin', 'root'] },
   favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Article' }],
   following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   hash: String,
@@ -70,6 +71,7 @@ UserSchema.methods.toProfileJSONFor = function (user) {
   return {
     username: this.username,
     bio: this.bio,
+    email: this.email,
     image: this.image || 'https://static.productionready.io/images/smiley-cyrus.jpg',
     following: user ? user.isFollowing(this._id) : false
   };

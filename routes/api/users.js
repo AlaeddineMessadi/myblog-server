@@ -5,6 +5,9 @@ var User = mongoose.model('User');
 var auth = require('../auth');
 var connectDb = require('../../config/connectDb');
 var mailer = require('../../utils/mailer');
+var createError = require('http-errors');
+var httpStatus = require('http-status');
+
 
 connectDb();
 
@@ -16,9 +19,12 @@ connectDb();
 // }
 
 
-router.get('/', auth.required, function (req, res, next) {
+router.get('/', auth.required, async function (req, res, next) {
+
+
+  // the Authorization should be handled first by express-jwt as auth.required, a second layer
   User.findById(req.payload.id).then(function (user) {
-    if (!user) { return res.sendStatus(401); }
+    if (!user) return next(createError(httpStatus.NOT_FOUND));
 
     return res.json({ user: user.toAuthJSON() });
   }).catch(next);
@@ -26,13 +32,17 @@ router.get('/', auth.required, function (req, res, next) {
 
 // update user
 router.put('/', auth.required, function (req, res, next) {
+
   User.findById(req.payload.id).then(function (user) {
-    if (!user) { return res.sendStatus(401); }
+
+    // just incase if the user was not found
+    if (!user) return next(createError(httpStatus.NOT_FOUND));
 
     // only update fields that were actually passed...
     if (typeof req.body.user.username !== 'undefined') {
       user.username = req.body.user.username;
     }
+
     if (typeof req.body.user.email !== 'undefined') {
       user.email = req.body.user.email;
     }
@@ -46,10 +56,15 @@ router.put('/', auth.required, function (req, res, next) {
       user.setPassword(req.body.user.password);
     }
 
+
+
+    console.log('my pfole')
     return user.save().then(function () {
       return res.json({ user: user.toAuthJSON() });
     });
-  }).catch(next);
+
+
+  }).catch(e => next(createError(httpStatus.INTERNAL_SERVER_ERROR)));
 });
 
 //  register a user
@@ -71,14 +86,14 @@ router.post('/', async function (req, res, next) {
     };
     // const response = await mailer(objectMail, data);
     return res.json({ user: user.toAuthJSON() });
-  }).catch(next);
+  }).catch(e => next(createError(httpStatus.INTERNAL_SERVER_ERROR)));
 });
 
 router.get('/activation', function (req, res, next) {
   const { hash } = req.query;
 
   if (!hash) {
-    return res.json({ message: 'activation Code is not provided' });
+    return next(createError(httpStatus.UNPROCESSABLE_ENTITY, 'ACTIVATION Code is not provided'));
   }
 
   User.findOne({ activationHash: hash }).then(user => {
@@ -87,9 +102,9 @@ router.get('/activation', function (req, res, next) {
         return res.json({ ...user.toJSON, message: 'User is activated' });
       });
     }
-    return res.json({ ...user.toJSON, message: 'User cannot be activated' });
+    return next(createError(httpStatus.INTERNAL_SERVER_ERROR, `User ${user.username} cannot be Activated`));
   }).catch(error => {
-    return res.json({ message: 'Activation code is incorrect' });
+    return next(createError(httpStatus.UNPROCESSABLE_ENTITY, 'Activation code is incorrect'));
   });
 });
 
@@ -97,23 +112,24 @@ router.get('/activation', function (req, res, next) {
 
 router.post('/login', function (req, res, next) {
   if (!req.body.user.email) {
-    return res.status(422).json({ errors: { email: "can't be blank" } });
+    return next(createError(httpStatus.UNPROCESSABLE_ENTITY, `Email can't be blank`));
   }
 
   if (!req.body.user.password) {
-    return res.status(422).json({ errors: { password: "can't be blank" } });
+    return next(createError(httpStatus.UNPROCESSABLE_ENTITY, `Password can't be blank`));
+
   }
 
   passport.authenticate('local', { session: false }, function (err, user, info) {
     if (err) { return next(err); }
 
-    if (!user.isActive) return res.status(405).json({ status: 405, message: 'User is not activated' });
+    if (!user.isActive) return next(createError(httpStatus.METHOD_NOT_ALLOWED, `User is not activated`));
 
     if (user) {
       user.token = user.generateJWT();
       return res.json(user.toAuthJSON());
     } else {
-      return res.status(422).json(info);
+      return next(createError(httpStatus.UNPROCESSABLE_ENTITY, info));
     }
   })(req, res, next);
 });

@@ -1,4 +1,7 @@
 mongoose = require('mongoose');
+var createError = require('http-errors');
+var httpStatus = require('http-status');
+
 
 if (!process.env.now) require("dotenv").config();
 
@@ -29,9 +32,8 @@ async function connectDb() {
     connection.isConnected = db.connections[0].readyState;
     console.log('Connected to Database')
   } catch (exception) {
-    const error = new Error(exception);
-    console.log('Error: cannot connect to the Database')
-    throw error;
+    const error = createError(httpStatus.INTERNAL_SERVER_ERROR, exception);
+    console.error({ status: error.status, name: error.name, message: `Cannot connect to the Database : ${error.message}` });
   }
 }
 
