@@ -61,9 +61,7 @@ router.get('/last', auth.required, function (req, res, next) {
 
 
 // get articles
-router.get('/', auth.optional, function (req, res, next) {
-  // const res = await Article.updateMany({ tagList:  }, { : true });
-
+router.get('/', auth.optional, async function (req, res, next) {
   var query = {};
   var limit = 5;
   var offset = 0;
@@ -104,18 +102,18 @@ router.get('/', auth.optional, function (req, res, next) {
         .sort({ createdAt: 'desc' })
         .populate('author')
         .exec(),
-      // Article.count(query).exec(),
+      Article.count(query).exec(),
       req.payload ? User.findById(req.payload.id) : null,
     ]).then(function (results) {
       var articles = results[0];
-      // var articlesCount = results[1];
+      var articlesCount = results[1];
       var user = results[2];
 
       return res.json({
         articles: articles.map(function (article) {
           return article.toJSONFor(user);
         }),
-        // articlesCount: articlesCount
+        articlesCount: articlesCount
       });
     });
   }).catch(next);
@@ -345,3 +343,16 @@ router.delete('/:article/comments/:comment', auth.required, function (req, res, 
 });
 
 module.exports = router;
+
+
+
+
+// update articles without any tagList
+// const result = await Article.updateMany({
+//   "$or": [
+//     // { "tagList": { "$exists": false } },
+//     // { "tagList": null },
+//     { "tagList": [] }
+//   ]
+// },
+//   { "$set": { "tagList": ["javascript", "frontend", "Reactjs"] } });
