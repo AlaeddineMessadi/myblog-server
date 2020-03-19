@@ -3,23 +3,21 @@ var createError = require('http-errors');
 var httpStatus = require('http-status');
 
 
-if (!process.env.now) require("dotenv").config();
-
-// var createError = require('http-errors');
-
 const connection = {};
 
-if (connection.isConnected) {
-  // Use exsisting database connection
-  console.warn('using existing connection')
-  return;
-}
 
-let uri = process.env.mongo_uri;
-uri = uri.replace('<username>', process.env.mongo_usr).replace('<password>', process.env.mongo_pwd);
+let uri = process.env.MONGO_URI;
+uri = uri.replace('<username>', process.env.MONGO_USR).replace('<password>', process.env.MONGO_PWD);
 
 async function connectDb() {
   //  use new database connection
+  if (connection.isConnected) {
+    // Use exsisting database connection
+    console.warn('Using existing connection')
+    return;
+  }
+
+
   try {
     const db = await mongoose.connect(uri, {
       useNewUrlParser: true,
@@ -38,12 +36,3 @@ async function connectDb() {
 }
 
 module.exports = connectDb;
-
-// if (isProduction) {
-//   console.warn('this is production for mongo')
-//   mongoose.connect(uri);
-// } else {
-//   console.warn('process.env.NODE_ENV ', process.env.NODE_ENV);
-
-
-// }

@@ -51,20 +51,16 @@ router.get('/count', auth.required, function (req, res, next) {
 });
 
 
-// Get me last published article
-router.get('/last', auth.required, function (req, res, next) {
-  Article.find().sort({ createdAt: -1 }).then(function (article) {
-    return res.json({ status: httpStatus.OK, data: article });
-  }).catch(e => next(createError(httpStatus.INTERNAL_SERVER_ERROR)));
-});
-
-
-
 // get articles
 router.get('/', auth.optional, async function (req, res, next) {
   var query = {};
   var limit = 5;
   var offset = 0;
+
+  if (typeof req.payload !== 'undefined' && req.payload.role !== 'admin') {
+    // if It's not admin get me only published articles
+    query = { published: true }
+  }
 
   if (typeof req.query.limit !== 'undefined') {
     limit = req.query.limit;

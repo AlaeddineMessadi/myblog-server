@@ -11,6 +11,7 @@ var ArticleSchema = new mongoose.Schema({
   image: String,
   imgcaption: String,
   duration: { type: Number, default: 5 },
+  published: { type: Boolean, default: false },
   favoritesCount: { type: Number, default: 0 },
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
   tagList: [{ type: String }],
@@ -54,6 +55,7 @@ ArticleSchema.methods.toJSONFor = function (user) {
     image: this.image,
     imgcaption: this.imgcaption,
     duration: this.duration,
+    published: this.published,
     createdAt: this.createdAt,
     updatedAt: this.updatedAt,
     tagList: this.tagList.filter(e => e),
@@ -63,4 +65,9 @@ ArticleSchema.methods.toJSONFor = function (user) {
   };
 };
 
-mongoose.model('Article', ArticleSchema);
+if (mongoose.models.Article) {
+
+  console.log('mongoose.models.Article  exists')
+}
+
+module.exports = mongoose.models.Article || mongoose.model('Article', ArticleSchema);

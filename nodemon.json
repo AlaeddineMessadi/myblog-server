@@ -1,10 +1,5 @@
 {
   "env": {
-    "mongo_uri": "mongodb+srv://<username>:<password>@cluster0-icrxl.mongodb.net/conduit?retryWrites=true&w=majority",
-    "mongo_usr": "aladdinDev",
-    "mongo_pwd": "myBlog",
-    "node_env": "DEV",
-    "port": "3000",
-    "secret": "ifoundyou"
+    "NODEMON": "TRUE"
   }
 }

@@ -15,10 +15,9 @@ var PrettyError = require('pretty-error');
 var pe = new PrettyError();
 pe.start();
 
+if (process.env.NODEMON === "TRUE") require('dotenv').config({ path: '.env.build' })
 
-if (!process.env.now) require("dotenv").config();
-
-var isProduction = process.env.node_env === 'PROD';
+var isProduction = process.env.NODE_ENV === 'PROD';
 var port = process.env.now ? 8080 : 4000;
 
 // Create global app object
@@ -88,13 +87,10 @@ app.use(function (err, req, res, next) {
   });
 });
 
-
+// console.log('process.env.ALL: ', process.env)
 // finally, let's start our server...
-var server = app.listen(process.env.port || 3000, function () {
+var server = app.listen(process.env.PORT || 3000, function () {
   console.log('Listening on port ' + server.address().port);
 });
 
-
-// app.set('port', process.env.PORT || 3000)
-
-// module.exports = app;
+module.exports = server;

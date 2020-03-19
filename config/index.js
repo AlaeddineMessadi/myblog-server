@@ -1,3 +1,3 @@
 module.exports = {
-  secret: process.env.node_env === 'PROD' ? process.env.secret : 'DEV'
+  secret: process.env.NODE_ENV === 'PROD' ? process.env.SECRET : 'iamsecret'
 };
