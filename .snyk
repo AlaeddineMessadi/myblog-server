@@ -8,6 +8,30 @@ patch:
         patched: '2021-02-08T01:25:23.055Z'
     - nodemon > chokidar > fsevents > node-pre-gyp > tar-pack > debug:
         patched: '2021-02-08T01:25:23.055Z'
+    - nodemon > undefsafe > debug:
+        patched: '2021-02-08T01:38:27.141Z'
+    - nodemon > chokidar > braces > snapdragon > debug:
+        patched: '2021-02-08T01:38:27.141Z'
+    - nodemon > chokidar > anymatch > micromatch > snapdragon > debug:
+        patched: '2021-02-08T01:38:27.141Z'
+    - nodemon > chokidar > readdirp > micromatch > snapdragon > debug:
+        patched: '2021-02-08T01:38:27.141Z'
+    - nodemon > chokidar > anymatch > micromatch > braces > snapdragon > debug:
+        patched: '2021-02-08T01:38:27.141Z'
+    - nodemon > chokidar > readdirp > micromatch > braces > snapdragon > debug:
+        patched: '2021-02-08T01:38:27.141Z'
+    - nodemon > chokidar > anymatch > micromatch > extglob > snapdragon > debug:
+        patched: '2021-02-08T01:38:27.141Z'
+    - nodemon > chokidar > readdirp > micromatch > extglob > snapdragon > debug:
+        patched: '2021-02-08T01:38:27.141Z'
+    - nodemon > chokidar > anymatch > micromatch > nanomatch > snapdragon > debug:
+        patched: '2021-02-08T01:38:27.141Z'
+    - nodemon > chokidar > readdirp > micromatch > nanomatch > snapdragon > debug:
+        patched: '2021-02-08T01:38:27.141Z'
+    - nodemon > chokidar > anymatch > micromatch > extglob > expand-brackets > snapdragon > debug:
+        patched: '2021-02-08T01:38:27.141Z'
+    - nodemon > chokidar > readdirp > micromatch > extglob > expand-brackets > snapdragon > debug:
+        patched: '2021-02-08T01:38:27.141Z'
   'npm:extend:20180424':
     - newman > postman-request > extend:
         patched: '2021-02-08T01:25:23.055Z'
