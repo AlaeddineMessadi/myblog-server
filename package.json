@@ -11,7 +11,9 @@
     "stop": "lsof -ti :3000 | xargs kill",
     "mongo:stop": "docker stop realworld-mongo && docker rm realworld-mongo",
     "build": "now -e mongo_usr=@mongo_usr -e mongo_pwd=@mongo_pwd -e secret=@secret",
-    "prod": "now --prod -e NODE_ENV=PROD -e mongo_usr=@mongo_usr -e mongo_pwd=@mongo_pwd -e mongo_uri=@mongo_uri -e secret=@secret"
+    "prod": "now --prod -e NODE_ENV=PROD -e mongo_usr=@mongo_usr -e mongo_pwd=@mongo_pwd -e mongo_uri=@mongo_uri -e secret=@secret",
+    "snyk-protect": "snyk protect",
+    "prepare": "yarn run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -42,11 +44,13 @@
     "request": "2.69.0",
     "slug": "0.9.1",
     "slugify": "^1.4.0",
-    "underscore": "1.8.3"
+    "underscore": "1.8.3",
+    "snyk": "^1.446.0"
   },
   "devDependencies": {
     "dotenv": "^8.2.0",
-    "newman": "^3.8.2",
-    "nodemon": "^1.11.0"
-  }
+    "newman": "^5.2.0",
+    "nodemon": "^1.14.11"
+  },
+  "snyk": true
 }

@@ -1,0 +1,64 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.19.0
+ignore: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  'npm:debug:20170905':
+    - nodemon > debug:
+        patched: '2021-02-08T01:25:23.055Z'
+    - nodemon > chokidar > fsevents > node-pre-gyp > tar-pack > debug:
+        patched: '2021-02-08T01:25:23.055Z'
+  'npm:extend:20180424':
+    - newman > postman-request > extend:
+        patched: '2021-02-08T01:25:23.055Z'
+    - newman > postman-runtime > postman-request > extend:
+        patched: '2021-02-08T01:25:23.055Z'
+    - nodemon > chokidar > fsevents > node-pre-gyp > request > extend:
+        patched: '2021-02-08T01:25:23.055Z'
+  'npm:hoek:20180212':
+    - newman > postman-request > hawk > hoek:
+        patched: '2021-02-08T01:25:23.055Z'
+    - newman > postman-request > hawk > boom > hoek:
+        patched: '2021-02-08T01:25:23.055Z'
+    - newman > postman-request > hawk > sntp > hoek:
+        patched: '2021-02-08T01:25:23.055Z'
+    - newman > postman-runtime > postman-request > hawk > hoek:
+        patched: '2021-02-08T01:25:23.055Z'
+    - newman > postman-request > hawk > cryptiles > boom > hoek:
+        patched: '2021-02-08T01:25:23.055Z'
+    - newman > postman-runtime > postman-request > hawk > boom > hoek:
+        patched: '2021-02-08T01:25:23.055Z'
+    - newman > postman-runtime > postman-request > hawk > sntp > hoek:
+        patched: '2021-02-08T01:25:23.055Z'
+    - newman > postman-runtime > postman-request > hawk > cryptiles > boom > hoek:
+        patched: '2021-02-08T01:25:23.055Z'
+    - nodemon > chokidar > fsevents > node-pre-gyp > request > hawk > hoek:
+        patched: '2021-02-08T01:25:23.055Z'
+    - nodemon > chokidar > fsevents > node-pre-gyp > request > hawk > boom > hoek:
+        patched: '2021-02-08T01:25:23.055Z'
+    - nodemon > chokidar > fsevents > node-pre-gyp > request > hawk > sntp > hoek:
+        patched: '2021-02-08T01:25:23.055Z'
+    - nodemon > chokidar > fsevents > node-pre-gyp > request > hawk > cryptiles > boom > hoek:
+        patched: '2021-02-08T01:25:23.055Z'
+  SNYK-JS-LODASH-567746:
+    - newman > async > lodash:
+        patched: '2021-02-08T01:25:23.055Z'
+    - newman > postman-runtime > async > lodash:
+        patched: '2021-02-08T01:25:23.055Z'
+  'npm:lodash:20180130':
+    - newman > cli-table2 > lodash:
+        patched: '2021-02-08T01:25:23.055Z'
+  'npm:stringstream:20180511':
+    - newman > postman-request > stringstream:
+        patched: '2021-02-08T01:25:23.055Z'
+    - newman > postman-runtime > postman-request > stringstream:
+        patched: '2021-02-08T01:25:23.055Z'
+    - nodemon > chokidar > fsevents > node-pre-gyp > request > stringstream:
+        patched: '2021-02-08T01:25:23.055Z'
+  'npm:tough-cookie:20170905':
+    - newman > postman-request > tough-cookie:
+        patched: '2021-02-08T01:25:23.055Z'
+    - newman > postman-runtime > postman-request > tough-cookie:
+        patched: '2021-02-08T01:25:23.055Z'
+    - nodemon > chokidar > fsevents > node-pre-gyp > request > tough-cookie:
+        patched: '2021-02-08T01:25:23.055Z'
