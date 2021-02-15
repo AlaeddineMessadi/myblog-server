@@ -25,7 +25,7 @@
     "cors": "2.7.1",
     "ejs": "^3.1.6",
     "errorhandler": "1.4.3",
-    "express": "4.13.4",
+    "express": "4.17.1",
     "express-jwt": "3.3.0",
     "express-session": "1.14.0",
     "http-errors": "^1.7.3",
