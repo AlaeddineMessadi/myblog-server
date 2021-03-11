@@ -50,7 +50,7 @@
   "devDependencies": {
     "dotenv": "^8.2.0",
     "newman": "^5.2.0",
-    "nodemon": "^1.14.11"
+    "nodemon": "^2.0.0"
   },
   "snyk": true
 }
