@@ -45,7 +45,7 @@
     "slug": "0.9.1",
     "slugify": "^1.4.0",
     "underscore": "1.12.0",
-    "snyk": "^1.446.0"
+    "snyk": "^1.996.0"
   },
   "devDependencies": {
     "dotenv": "^8.2.0",
