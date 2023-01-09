@@ -31,7 +31,7 @@
     "http-errors": "^1.7.3",
     "http-status": "^1.4.2",
     "jsonwebtoken": "7.4.3",
-    "method-override": "2.3.5",
+    "method-override": "3.0.0",
     "methods": "1.1.2",
     "mongodb-client-encryption": "^1.2.1",
     "mongoose": "5.9.3",
@@ -45,7 +45,7 @@
     "slug": "0.9.1",
     "slugify": "^1.4.0",
     "underscore": "1.12.0",
-    "snyk": "^1.446.0"
+    "snyk": "^1.518.0"
   },
   "devDependencies": {
     "dotenv": "^8.2.0",
