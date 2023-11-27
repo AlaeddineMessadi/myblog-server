@@ -26,7 +26,7 @@
     "ejs": "^3.1.7",
     "errorhandler": "1.4.3",
     "express": "4.13.4",
-    "express-jwt": "3.4.0",
+    "express-jwt": "6.1.1",
     "express-session": "1.15.6",
     "http-errors": "^1.7.3",
     "http-status": "^1.4.2",
@@ -40,16 +40,16 @@
     "nodemailer": "^6.4.16",
     "passport": "0.3.2",
     "passport-local": "1.0.0",
-    "pretty-error": "^2.1.1",
-    "request": "2.69.0",
+    "pretty-error": "^4.0.0",
+    "request": "2.80.0",
     "slug": "0.9.1",
     "slugify": "^1.4.0",
     "underscore": "1.12.0",
-    "snyk": "^1.446.0"
+    "snyk": "^1.685.0"
   },
   "devDependencies": {
     "dotenv": "^8.2.0",
-    "newman": "^5.2.4",
+    "newman": "^6.0.0",
     "nodemon": "^2.0.0"
   },
   "snyk": true
